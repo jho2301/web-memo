@@ -26,6 +26,7 @@ export default {
     margin-bottom: 24px;
     padding-bottom: 40px;
     border-bottom: 1px solid #eee;
+    clear: both;
   }
 
   .memo-form form fieldset div {
@@ -34,6 +35,7 @@ export default {
     margin-bottom: 20px;
     box-shadow: 0 4px 10px -4px rgba(0,0,0,0.2);
     background: #ffffff;
+    /* width: 40vw; */
   }
 
   .memo-form form fieldset div button[type="reset"] {
@@ -53,5 +55,26 @@ export default {
     background: #ff5a00;
     color: #fff;
     font-size: 16px;
+  }
+
+  .memo-form form fieldset .memo-form__title-form {
+    width: 100%;
+    margin-bottom: 12px;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .memo-form form fieldset .memo-form__content-form {
+    line-height: 22px;
+    vertical-align: top;
+    font-size: 14px;
+    width: 100%;
+    height: 66px;
+    
+  }
+
+
+  .memo-form input:focus ,.memo-form textarea:focus {
+    outline: none;
   }
 </style>
