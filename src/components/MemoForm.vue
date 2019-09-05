@@ -1,15 +1,15 @@
 <template>
   <div class="memo-form">
-    <form>
+    <form @submit.prevent="addMemo">
       <fieldset>
         <div>
           <input type="text"
                  class="memo-form__title-form"
-                 placeholder="메모의 제목을 입력해주세요" />
-          <textarea class="memo-form__content-form" placeholder="메모의 내용을 입력해주세요"></textarea>
+                 placeholder="메모의 제목을 입력해주세요" v-model="title"/>
+          <textarea class="memo-form__content-form" placeholder="메모의 내용을 입력해주세요" v-model="content"></textarea>
           <button type="reset"><font-awsome icon="sync-alt"/></button>
         </div>
-        <button type="submit">등록하기</button>
+        <button type="submit" :class="{disabled: !valid}" :disabled="!valid">등록하기</button>
       </fieldset>
     </form>
   </div>
@@ -17,6 +17,24 @@
 
 <script>
 export default {
+  data() {
+    return {
+      title: '',
+      content: '',
+    }
+  },
+  methods: {
+    addMemo() {
+      const {title, content} = this;
+      const id = new Date().getTime();
+      this.$emit('addMemo', {id, title, content})
+    }
+  },
+  computed: {
+    valid() {
+      return (this.title && this.content)? true : false
+    }
+  }
 
 }
 </script>
@@ -70,7 +88,10 @@ export default {
     font-size: 14px;
     width: 100%;
     height: 66px;
-    
+  }
+
+  .disabled {
+    background: rgb(212, 212, 212) !important;
   }
 
 
