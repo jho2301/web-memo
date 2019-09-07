@@ -7,7 +7,7 @@
                  class="memo-form__title-form"
                  placeholder="메모의 제목을 입력해주세요" v-model="title"/>
           <textarea class="memo-form__content-form" placeholder="메모의 내용을 입력해주세요" v-model="content"></textarea>
-          <button type="reset"><font-awsome icon="sync-alt"/></button>
+          <button type="reset" @click.prevent="clearInput"><font-awsome icon="sync-alt"/></button>
         </div>
         <button type="submit" :class="{disabled: !valid}" :disabled="!valid">등록하기</button>
       </fieldset>
@@ -27,7 +27,12 @@ export default {
     addMemo() {
       const {title, content} = this;
       const id = new Date().getTime();
-      this.$emit('addMemo', {id, title, content})
+      this.$emit('add-memo', {id, title, content});
+      this.clearInput();
+    },
+    clearInput() {
+      this.title = '';
+      this.content = '';
     }
   },
   computed: {
@@ -39,7 +44,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .memo-form {
     margin-bottom: 24px;
     padding-bottom: 40px;
@@ -63,6 +68,9 @@ export default {
     font-size : 16px;
     background: none;
     color: black;
+    &:focus {
+      outline: none;
+    }
   }
 
   .memo-form form fieldset button[type="submit"] {
@@ -73,6 +81,13 @@ export default {
     background: #ff5a00;
     color: #fff;
     font-size: 16px;
+    &:focus {
+      outline: none;
+    }
+    &:active {
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.582);
+      background: #e45000;
+    }
   }
 
   .memo-form form fieldset .memo-form__title-form {

@@ -1,7 +1,13 @@
 <template>
   <div class="memo-app">
-    <memo-form></memo-form>
-    <memo :memos="memos"></memo>
+    <memo-form @add-memo="addMemo" />
+    <ul class="memo-list">
+      <memo v-for="memo of memos" 
+            :key="memo.id" 
+            :memo="memo" 
+            @delete-memo="deleteMemo"
+            @update-memo="updateMemo"/>
+    </ul>
   </div>
 </template>
 
@@ -16,6 +22,31 @@ export default {
       memos:[]
     }
   },
+  methods: {
+    addMemo(payload) {
+      this.memos.unshift(payload);
+      this.storeMemo();
+    },
+    storeMemo() {
+      const memosToString = JSON.stringify(this.memos);
+      localStorage.setItem('memos', memosToString);
+    },
+    deleteMemo(payload) {
+      const index = this.memos.findIndex( v => v.id === payload);
+      this.memos.splice(index, 1);
+      this.storeMemo();
+    },
+    updateMemo(payload) {
+      const {id, content} = payload;
+      const targetIndex = this.memos.findIndex(v=>v.id === id);
+      const targetMemo = this.memos[targetIndex];
+
+      this.memos.splice(targetIndex, 1, { ...targetMemo, content})
+      this.storeMemo();
+
+    }
+
+  },
   created() {
     this.memos = localStorage.memos ? JSON.parse(localStorage.memos) : [];
   },
@@ -27,5 +58,8 @@ export default {
 </script>
 
 <style>
-
+  .memo-list {
+    padding: 20px 0;
+    margin: 0;
+  }
 </style>

@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {faSyncAlt} from '@fortawesome/free-solid-svg-icons'
+import {faSyncAlt, faTimes} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSyncAlt);
+
+library.add(faSyncAlt, faTimes);
 Vue.component('font-awsome', FontAwesomeIcon);
 Vue.config.productionTip = false
 
