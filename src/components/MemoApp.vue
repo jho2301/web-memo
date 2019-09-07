@@ -15,6 +15,7 @@
 import MemoForm from './MemoForm.vue';
 import Memo from './Memo.vue';
 import axios from 'axios';
+import {mapState} from 'vuex'
 
 const memoAPI = axios.create({
   baseURL: 'http://localhost:8000/api/memos'
@@ -22,10 +23,10 @@ const memoAPI = axios.create({
 
 export default {
   name: 'MemoApp',
-  data() {
-    return {
-      memos:[]
-    }
+  computed: {
+    ...mapState([
+      'memos'
+    ])
   },
   methods: {
     async addMemo(payload) {
