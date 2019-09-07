@@ -14,6 +14,11 @@
 <script>
 import MemoForm from './MemoForm.vue';
 import Memo from './Memo.vue';
+import axios from 'axios';
+
+const memoAPI = axios.create({
+  baseURL: 'http://localhost:8000/api/memos'
+})
 
 export default {
   name: 'MemoApp',
@@ -23,32 +28,50 @@ export default {
     }
   },
   methods: {
-    addMemo(payload) {
-      this.memos.unshift(payload);
-      this.storeMemo();
+    async addMemo(payload) {
+      try{
+        const res = await memoAPI.post('/', payload)
+        this.memos.unshift(res.data);
+      }
+      catch(err) {
+        throw err;
+      }
     },
-    storeMemo() {
-      const memosToString = JSON.stringify(this.memos);
-      localStorage.setItem('memos', memosToString);
-    },
-    deleteMemo(payload) {
+
+    async deleteMemo(payload) {
       const index = this.memos.findIndex( v => v.id === payload);
-      this.memos.splice(index, 1);
-      this.storeMemo();
+
+      try{
+        await memoAPI.delete(`/${[payload]}`);
+        this.memos.splice(index, 1);
+      }
+      catch(err) {
+        throw err;
+      }
     },
+
     updateMemo(payload) {
       const {id, content} = payload;
       const targetIndex = this.memos.findIndex(v=>v.id === id);
       const targetMemo = this.memos[targetIndex];
 
-      this.memos.splice(targetIndex, 1, { ...targetMemo, content})
-      this.storeMemo();
-
+      memoAPI.put(`/${id}`, {content})
+        .then(()=> {
+          this.memos.splice(targetIndex, 1, { ...targetMemo, content})
+        })
     }
 
   },
-  created() {
-    this.memos = localStorage.memos ? JSON.parse(localStorage.memos) : [];
+  async created() {
+    try{
+      const res = await memoAPI.get('/');
+      this.memos = res.data;
+    }
+    catch(err) {
+      throw err;
+    }
+    
+
   },
   components: {
     'memo-form': MemoForm,

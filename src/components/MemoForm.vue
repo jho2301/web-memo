@@ -1,6 +1,6 @@
 <template>
   <div class="memo-form">
-    <form @submit.prevent="addMemo">
+    <form @submit.prevent="addMemo" @keydown.enter.ctrl="addMemo">
       <fieldset>
         <div>
           <input type="text"
@@ -26,8 +26,7 @@ export default {
   methods: {
     addMemo() {
       const {title, content} = this;
-      const id = new Date().getTime();
-      this.$emit('add-memo', {id, title, content});
+      this.$emit('add-memo', {title, content});
       this.clearInput();
     },
     clearInput() {
