@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-header/>
+    <app-header :memos-count="getMemosCount"/>
     <memo-app/>
   </div>
 </template>
@@ -14,7 +14,8 @@ export default {
   components: {
     'app-header': AppHeader,
     'memo-app': MemoApp
-  }
+  },
+
 }
 </script>
 
